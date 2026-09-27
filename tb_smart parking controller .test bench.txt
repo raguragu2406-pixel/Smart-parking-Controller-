@@ -1,0 +1,97 @@
+module tb_smart_parking;
+
+reg clk;
+reg reset;
+reg vehicle_entry;
+reg vehicle_exit;
+
+wire [3:0] occupied_count;
+wire [3:0] slots_available;
+wire parking_full;
+wire entry_allowed;
+wire exit_allowed;
+
+smart_parking_controller #(
+    .CAPACITY(8)
+) dut (
+    .clk(clk),
+    .reset(reset),
+    .vehicle_entry(vehicle_entry),
+    .vehicle_exit(vehicle_exit),
+    .occupied_count(occupied_count),
+    .slots_available(slots_available),
+    .parking_full(parking_full),
+    .entry_allowed(entry_allowed),
+    .exit_allowed(exit_allowed)
+);
+
+always #5 clk = ~clk;
+
+initial begin
+
+    clk = 0;
+    reset = 1;
+    vehicle_entry = 0;
+    vehicle_exit = 0;
+
+    $monitor("Time=%0t | Entry=%b | Exit=%b | Occupied=%d | Available=%d | Full=%b | Entry_OK=%b",
+             $time,
+             vehicle_entry,
+             vehicle_exit,
+             occupied_count,
+             slots_available,
+             parking_full,
+             entry_allowed);
+
+    // Reset
+    #10 reset = 0;
+
+    // Vehicle 1 enters
+    #10 vehicle_entry = 1;
+    #10 vehicle_entry = 0;
+
+    // Vehicle 2 enters
+    #10 vehicle_entry = 1;
+    #10 vehicle_entry = 0;
+
+    // Vehicle 3 enters
+    #10 vehicle_entry = 1;
+    #10 vehicle_entry = 0;
+
+    // Vehicle 4 enters
+    #10 vehicle_entry = 1;
+    #10 vehicle_entry = 0;
+
+    // Vehicle 5 enters
+    #10 vehicle_entry = 1;
+    #10 vehicle_entry = 0;
+
+    // Vehicle 6 enters
+    #10 vehicle_entry = 1;
+    #10 vehicle_entry = 0;
+
+    // Vehicle 7 enters
+    #10 vehicle_entry = 1;
+    #10 vehicle_entry = 0;
+
+    // Vehicle 8 enters - parking becomes FULL
+    #10 vehicle_entry = 1;
+    #10 vehicle_entry = 0;
+
+    // Vehicle 9 tries to enter - should be BLOCKED
+    #10 vehicle_entry = 1;
+    #10 vehicle_entry = 0;
+
+    // Vehicle exits
+    #10 vehicle_exit = 1;
+    #10 vehicle_exit = 0;
+
+    // Vehicle enters again
+    #10 vehicle_entry = 1;
+    #10 vehicle_entry = 0;
+
+    #20 $finish;
+
+end
+
+endmodule
