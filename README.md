@@ -85,6 +85,6 @@ Smart-Parking-Controller/
 ├── tb_smart_parking.sv
 ├── simulation_output.png
 └── README.md
-Conclusion
+# Conclusion
 The Smart Parking Controller was successfully designed using Verilog RTL and verified using a testbench. The simulation demonstrates vehicle counting, parking capacity monitoring, entry control, and exit control.
  
